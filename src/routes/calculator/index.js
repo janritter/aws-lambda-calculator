@@ -1,45 +1,103 @@
-import { h } from 'preact';
+import { h, Component } from 'preact';
 import style from './style';
 
-const Calculator = () => {
-	const minMemory = 128;
-	const maxMemory = 3008;
+class Calculator extends Component {
+	minMemory = 128;
+	maxMemory = 3008;
 
-	let dropdownOptions = [];
+	state = {
+		calls: null,
+		runtime: null,
+		memory: this.minMemory
 
-	for (let memory = minMemory; memory <= maxMemory; memory += 64) {
-		dropdownOptions.push(<option>{memory}</option>);
+	};
+
+	onCallsInput = e => {
+		this.setState({ calls: Number(e.target.value) });
 	}
 
-	return (
-		<div class={style.home}>
-			<h1 class="title is-1">AWS Lambda calculator</h1>
-			<hr />
-			<form>
+	onRuntimeInput = e => {
+		this.setState({ runtime: Number(e.target.value) });
+	}
+
+	onMemoryInput = e => {
+		this.setState({ memory: Number(e.target.value) });
+	}
+
+	renderResult = () => {
+		// Region Frankfurt
+		const pricePerGBs = 0.000016667;
+		const pricePerMillionCalls = 0.2;
+
+		if (this.state.calls && this.state.memory && this.state.runtime) {
+
+			const requestCost = (pricePerMillionCalls / 1000000) * this.state.calls;
+
+			const pricePer100ms = ((pricePerGBs / 1024) * this.state.memory) / 10;
+			const executionCost = pricePer100ms * (this.state.runtime / 100) * this.state.calls;
+
+			return (
+				<article class="message">
+					<div class="message-header">
+						<p>Your cost</p>
+					</div>
+					<div class="message-body">
+						<p>
+							<b>Request cost: </b>{requestCost}$
+						</p>
+						<p>
+							<b>Execution cost: </b>{executionCost}$
+						</p>
+						<p>
+							<b>Total cost: </b>{requestCost + executionCost}$
+						</p>
+					</div>
+				</article>
+			);
+		}
+	}
+
+	render() {
+		const dropdownOptions = [];
+
+		for (let memory = this.minMemory; memory <= this.maxMemory; memory += 64) {
+			dropdownOptions.push(<option value={memory}>{memory}</option>);
+		}
+
+		return (
+			<div class={style.home}>
+				<h1 class="title is-1">AWS Lambda calculator</h1>
+				<hr />
 				<div class="field">
 					<label class="label">Lambda calls</label>
 					<div class="control">
-						<input name="lambdaCalls" class="input" type="number" placeholder="1" required />
+						<input
+							onInput={this.onCallsInput}
+							name="lambdaCalls" class="input" type="number" placeholder="1" min="1" required
+						/>
 					</div>
 				</div>
 				<div class="field">
 					<label class="label">Lambda per execution runtime in ms</label>
 					<div class="control">
-						<input name="lambdaRuntime" class="input" type="number" placeholder="600" required />
+						<input
+							onInput={this.onRuntimeInput}
+							name="lambdaRuntime" class="input" type="number" placeholder="600" min="1" required
+						/>
 					</div>
 				</div>
 				<label class="label">Configured memory in MB</label>
 				<div class="select">
-					<select>
+					<select value={this.state.memory} onInput={this.onMemoryInput}>
 						{dropdownOptions}
 					</select>
 				</div>
+				<hr />
 				<br />
-				<br />
-				<input type="submit" value="Calculate" class="button is-link" />
-			</form>
-		</div>
-	);
-};
+				{this.renderResult()}
+			</div>
+		);
+	}
+}
 
 export default Calculator;
