@@ -1,5 +1,5 @@
 {
-  "name": "aws-lambda-calculator",
+  "name": "AWS Lambda calculator",
   "short_name": "aws-lambda-calculator",
   "start_url": "/",
   "display": "standalone",
