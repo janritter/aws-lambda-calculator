@@ -1,4 +1,4 @@
-# aws-lambda-calculator
+# AWS Lambda calculator
 
 ## CLI Commands
 
