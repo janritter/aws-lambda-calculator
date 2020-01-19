@@ -34,25 +34,53 @@ class Calculator extends Component {
 			const requestCost = (pricePerMillionCalls / 1000000) * this.state.calls;
 
 			const pricePer100ms = ((pricePerGBs / 1024) * this.state.memory) / 10;
-			const executionCost = pricePer100ms * (this.state.runtime / 100) * this.state.calls;
+
+			// 1 unit = 100ms
+			let lambdaRuntime100msUnits = Math.round(this.state.runtime / 100);
+
+			// Minimum 100ms
+			if (lambdaRuntime100msUnits === 0) {
+				lambdaRuntime100msUnits = 1;
+			}
+
+			const executionCost = pricePer100ms * lambdaRuntime100msUnits * this.state.calls;
+
+			const lambdaRuntimeDifferenceFromBilled = this.state.runtime - lambdaRuntime100msUnits*100;
 
 			return (
-				<article class="message">
-					<div class="message-header">
-						<p>Your cost</p>
-					</div>
-					<div class="message-body">
-						<p>
-							<b>Request cost: </b>{requestCost}$
-						</p>
-						<p>
-							<b>Execution cost: </b>{executionCost}$
-						</p>
-						<p>
-							<b>Total cost: </b>{requestCost + executionCost}$
-						</p>
-					</div>
-				</article>
+				<div>
+					{lambdaRuntimeDifferenceFromBilled !== 0 ?
+						<article class="message is-info">
+							<div class="message-header">
+								<p>Runtime billing info</p>
+							</div>
+							<div class="message-body">
+								<p>AWS bills Lambda per 100ms. The runtime is rounded up to the nearest 100ms.</p>
+								<p>
+									<b>Runtime used for calculation: </b>{lambdaRuntime100msUnits * 100}ms
+								</p>
+							</div>
+						</article>
+						:
+						''
+					}
+					<article class="message">
+						<div class="message-header">
+							<p>Your cost</p>
+						</div>
+						<div class="message-body">
+							<p>
+								<b>Request cost: </b>{requestCost}$
+							</p>
+							<p>
+								<b>Execution cost: </b>{executionCost}$
+							</p>
+							<p>
+								<b>Total cost: </b>{requestCost + executionCost}$
+							</p>
+						</div>
+					</article>
+				</div>
 			);
 		}
 	}
@@ -92,7 +120,7 @@ class Calculator extends Component {
 						{dropdownOptions}
 					</select>
 				</div>
-				<hr />
+				<br />
 				<br />
 				{this.renderResult()}
 			</div>
