@@ -13,6 +13,7 @@ class Calculator extends Component {
 		calls: null,
 		runtime: null,
 		memory: this.minMemory,
+		freeTier: 'false',
 		executionCost: 0
 	};
 
@@ -28,7 +29,29 @@ class Calculator extends Component {
 		this.setState({ memory: Number(e.target.value) });
 	}
 
+	onRadioChange = (e) => {
+		this.setState({ freeTier: e.target.value });
+	}
+
 	runtimeAndMemoryForCostAndCalls = () => {
+		if (this.state.freeTier === 'true') {
+			return (
+				<div>
+					<hr />
+					<h3 class="title is-3">Runtime and memory for same execution cost</h3>
+					<article class="message is-warning">
+						<div class="message-header">
+							<p>Comparison with free tier not possible</p>
+						</div>
+						<div class="message-body">
+							<p>Activated free tier falsifies the results of runtime and memory for same execustion cost.</p>
+							<p>To get the result table, please deactivate free tier.</p>
+						</div>
+					</article>
+				</div>
+			);
+		}
+
 		if (this.state.executionCost) {
 			const runtimesForMemory = [];
 
@@ -69,11 +92,34 @@ class Calculator extends Component {
 	}
 
 	renderResult = () => {
-		if (this.state.calls && this.state.memory && this.state.runtime) {
+		// Free tier
+		const freeGBs = 400000;
+		const freeRequests = 1000000;
 
-			const requestCost = (this.pricePerMillionCalls / 1000000) * this.state.calls;
+		if (this.state.calls && this.state.memory && this.state.runtime && this.state.freeTier) {
 
-			const pricePer100ms = ((this.pricePerGBs / 1024) * this.state.memory) / 10;
+			// Request cost
+			let requestsCoveredByFreeTier = 0;
+			let requestsNotCoveredByFreeTier = 0;
+
+			if (this.state.freeTier === 'true') {
+				if (this.state.calls <= freeRequests) {
+					requestsCoveredByFreeTier = this.state.calls;
+				}
+				else {
+					requestsCoveredByFreeTier = freeRequests;
+					requestsNotCoveredByFreeTier = this.state.calls - freeRequests;
+				}
+			}
+			else {
+				requestsNotCoveredByFreeTier = this.state.calls;
+			}
+
+			const requestCost = (this.pricePerMillionCalls / 1000000) * requestsNotCoveredByFreeTier;
+
+			// Execution cost
+			let executionCoveredByFreeTier = 0;
+			let executionNotCoveredByFreeTier = 0;
 
 			// 1 unit = 100ms
 			let lambdaRuntime100msUnits = Math.round(this.state.runtime / 100);
@@ -83,7 +129,23 @@ class Calculator extends Component {
 				lambdaRuntime100msUnits = 1;
 			}
 
-			const executionCost = pricePer100ms * lambdaRuntime100msUnits * this.state.calls;
+			const runtimeInSeconds = lambdaRuntime100msUnits / 10;
+			const gigabyteSeconds = (runtimeInSeconds / (1024 / this.state.memory)) * this.state.calls;
+
+			if (this.state.freeTier === 'true') {
+				if (gigabyteSeconds <= freeGBs) {
+					executionCoveredByFreeTier = gigabyteSeconds;
+				}
+				else {
+					executionCoveredByFreeTier = freeGBs;
+					executionNotCoveredByFreeTier = gigabyteSeconds - freeGBs;
+				}
+			}
+			else {
+				executionNotCoveredByFreeTier = gigabyteSeconds;
+			}
+
+			const executionCost = this.pricePerGBs * executionNotCoveredByFreeTier;
 			this.state.executionCost = executionCost;
 
 			const lambdaRuntimeDifferenceFromBilled = this.state.runtime - lambdaRuntime100msUnits * 100;
@@ -110,12 +172,34 @@ class Calculator extends Component {
 							<p>Your cost</p>
 						</div>
 						<div class="message-body">
+							{requestsCoveredByFreeTier !== 0 ?
+								<p>
+									<b>Requests covered by free tier: </b>{requestsCoveredByFreeTier}
+								</p>
+								:
+								''
+							}
+							<p>
+								<b>Billed requests: </b>{requestsNotCoveredByFreeTier}
+							</p>
 							<p>
 								<b>Request cost: </b>{requestCost}$
+							</p>
+							<br />
+							{executionCoveredByFreeTier !== 0 ?
+								<p>
+									<b>Execution GB/s covered by free tier: </b>{executionCoveredByFreeTier}
+								</p>
+								:
+								''
+							}
+							<p>
+								<b>Billed execution GB/s: </b>{executionNotCoveredByFreeTier}
 							</p>
 							<p>
 								<b>Execution cost: </b>{executionCost}$
 							</p>
+							<br />
 							<p>
 								<b>Total cost: </b>{requestCost + executionCost}$
 							</p>
@@ -147,7 +231,7 @@ class Calculator extends Component {
 					</div>
 				</div>
 				<div class="field">
-					<label class="label">Lambda per execution runtime in ms</label>
+					<label class="label">Lambda runtime per execution in ms</label>
 					<div class="control">
 						<input
 							onInput={this.onRuntimeInput}
@@ -160,6 +244,25 @@ class Calculator extends Component {
 					<select value={this.state.memory} onInput={this.onMemoryInput}>
 						{dropdownOptions}
 					</select>
+				</div>
+				<br />
+				<br />
+				<label class="label">Inlcude free tier? 1M free requests per month and 400,000 GB-seconds of compute time per month</label>
+				<div class="control">
+					<label class="radio">
+						<input
+							onChange={this.onRadioChange}
+							type="radio" value="true" checked={this.state.freeTier === 'true'}
+						/>
+						Yes
+					</label>
+					<label class="radio">
+						<input
+							onChange={this.onRadioChange}
+							type="radio" value="false" checked={this.state.freeTier === 'false'}
+						/>
+						No
+					</label>
 				</div>
 				<br />
 				<br />
