@@ -3,6 +3,7 @@
   "name": "aws-lambda-calculator",
   "version": "0.0.0",
   "license": "MIT",
+  "homepage": "https://janritter.github.io/aws-lambda-calculator",
   "scripts": {
     "start": "per-env",
     "start:production": "npm run -s serve",
@@ -11,7 +12,9 @@
     "serve": "preact build && serve build --single",
     "dev": "preact watch",
     "lint": "eslint src",
-    "test": "jest"
+    "test": "jest",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "eslint-config-synacor"
@@ -34,6 +37,7 @@
   },
   "dependencies": {
     "bulma": "^0.8.0",
+    "gh-pages": "^2.2.0",
     "preact": "^10.0.1",
     "preact-render-to-string": "^5.1.0",
     "preact-router": "^3.0.0"
