@@ -2,7 +2,7 @@ import { h, Component } from 'preact';
 import { Router } from 'preact-router';
 
 // Code-splitting is automated for routes
-import Home from '../routes/home';
+import Calculator from '../routes/calculator';
 
 export default class App extends Component {
 	
@@ -18,7 +18,7 @@ export default class App extends Component {
 		return (
 			<div id="app">
 				<Router onChange={this.handleRoute}>
-					<Home path="/" />
+					<Calculator path="/" />
 				</Router>
 			</div>
 		);
