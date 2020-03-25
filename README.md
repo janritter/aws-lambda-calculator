@@ -1,5 +1,7 @@
 # AWS Lambda calculator
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/7299ac05-30e2-45b8-b9be-26adbd170af6/deploy-status)](https://app.netlify.com/sites/aws-lambda-calculator/deploys)
+
 ## CLI Commands
 
 ``` bash
