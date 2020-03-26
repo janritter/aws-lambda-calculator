@@ -1,5 +1,3 @@
-import App from './components/app';
-
-import "../node_modules/bulma/css/bulma.min.css";
+import { App } from "./components/App.js";
 
 export default App;
