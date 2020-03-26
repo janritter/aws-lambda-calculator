@@ -11,6 +11,7 @@ import {
 } from "../lib/calculator.js";
 
 import "bulma/css/bulma.css";
+import "../../assets/css/custom.css";
 
 const App = () => {
   const [lambdaRequests, setlambdaRequests] = useState(null);
@@ -62,7 +63,7 @@ const App = () => {
   }
 
   return (
-    <div class="container">
+    <div class="container calculator-container">
       <h1 class="title is-1">AWS Lambda calculator</h1>
       <hr />
       <div class="field">
