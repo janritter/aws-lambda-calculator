@@ -5,7 +5,7 @@ const Message = (props) => {
   return (
     <div>
       <div>
-        <article class={"message is-" + props.type}>
+        <article class={props.type ? "message is-" + props.type : "message"}>
           <div class="message-header">
             <p>{props.header}</p>
           </div>

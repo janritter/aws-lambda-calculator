@@ -1,15 +1,13 @@
 import { h } from "preact";
 import "bulma/css/bulma.css";
 import { Message } from "./Message.js";
+import {
+  lambdaMemory,
+  lambdaPrice,
+} from "../lib/lambdaDefaults.js";
 
 const RuntimeMemoryTable = (props) => {
-  const minMemory = 128;
-  const maxMemory = 3008;
-
-  // Region Frankfurt
-  const pricePerGBs = 0.000016667;
-
-  if (props.freeTier === "true") {
+  if (props.freeTier) {
     return (
       <div>
         <hr />
@@ -32,8 +30,13 @@ const RuntimeMemoryTable = (props) => {
   if (props.executionCost) {
     const runtimesForMemory = [];
 
-    for (let memory = minMemory; memory <= maxMemory; memory += 64) {
-      const pricePer100ms = ((pricePerGBs / 1024) * memory) / 10;
+    for (
+      let memory = lambdaMemory.min;
+      memory <= lambdaMemory.max;
+      memory += 64
+    ) {
+      const pricePer100ms
+        = ((lambdaPrice["eu-central-1"].gbs / 1024) * memory) / 10;
 
       const runtime = (props.executionCost
         / (pricePer100ms * props.calls)) * 100;
