@@ -17,12 +17,6 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
-  "eslintConfig": {
-    "extends": "eslint-config-synacor"
-  },
-  "eslintIgnore": [
-    "build/*"
-  ],
   "devDependencies": {
     "enzyme": "^3.10.0",
     "enzyme-adapter-preact-pure": "^2.0.0",
@@ -46,7 +40,6 @@
   },
   "dependencies": {
     "bulma": "^0.8.1",
-    "netlify-cli": "^2.40.0",
     "preact": "^10.3.4",
     "preact-render-to-string": "^5.1.4",
     "preact-router": "^3.2.1"
