@@ -103,7 +103,7 @@ const App = () => {
       <br />
       <br />
       <label class="label">Inlcude free tier? 1M free requests per month
-       and 400,000 GB-seconds of compute time per month</label>
+        and 400,000 GB-seconds of compute time per month</label>
       <div class="control">
         <label class="radio">
           <input

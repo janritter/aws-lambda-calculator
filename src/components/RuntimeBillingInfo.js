@@ -10,7 +10,7 @@ const RuntimeBillingInfo = (props) => {
         message={
           <div>
             <p>AWS bills Lambda per 100ms. The runtime is rounded up to
-                the nearest 100ms.</p>
+              the nearest 100ms.</p>
             <p>
               <b>Runtime used for calculation: </b>{props.runtimeBilled}ms
             </p>
