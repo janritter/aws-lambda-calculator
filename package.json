@@ -11,8 +11,8 @@
     "build": "preact build",
     "serve": "preact build && serve build --single",
     "dev": "preact watch",
-    "lint": "npx eslint .",
-    "lint-fix": "npx eslint . --fix",
+    "lint": "npx eslint src/",
+    "lint-fix": "npx eslint src/ --fix",
     "test": "jest",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
