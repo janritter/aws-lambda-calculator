@@ -39,7 +39,7 @@
     "eslint-plugin-standard": "^4.0.1"
   },
   "dependencies": {
-    "bulma": "^0.8.1",
+    "bulma": "^0.9.1",
     "preact": "^10.3.4",
     "preact-render-to-string": "^5.1.4",
     "preact-router": "^3.2.1"
