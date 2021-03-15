@@ -28,7 +28,7 @@
     "preact-cli": "^3.0.0-rc.10",
     "preact-render-spy": "^1.2.1",
     "serve": "^11.1.0",
-    "eslint": "^6.8.0",
+    "eslint": "^7.22.0",
     "eslint-config-google": "^0.14.0",
     "eslint-config-standard": "^14.1.1",
     "eslint-config-standard-preact": "^1.1.6",
