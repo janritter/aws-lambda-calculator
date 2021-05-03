@@ -124,7 +124,8 @@ const App = () => {
           ? <RuntimeBillingInfo
             runtimeBilled={executionTypesAndCost.runtimeBilled}
             runtime={lambdaRuntime}
-          /> : ""
+          />
+          : ""
       }
       <br />
       {
@@ -133,7 +134,8 @@ const App = () => {
           ? <Results
             requestTypesAndCost={requestTypesAndCost}
             executionTypesAndCost={executionTypesAndCost}
-          /> : ""
+          />
+          : ""
       }
       {
         executionTypesAndCost
@@ -141,7 +143,8 @@ const App = () => {
             freeTier={withFreeTier}
             executionCost={executionTypesAndCost.cost}
             calls={lambdaRequests}
-          /> : ""
+          />
+          : ""
       }
     </div>
   );
