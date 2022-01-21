@@ -42,7 +42,7 @@
     "bulma": "^0.9.3",
     "preact": "^10.5.14",
     "preact-render-to-string": "^5.1.19",
-    "preact-router": "^3.2.1"
+    "preact-router": "^4.0.1"
   },
   "jest": {
     "preset": "jest-preset-preact",
