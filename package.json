@@ -31,7 +31,7 @@
     "eslint-plugin-react-hooks": "^4.2.0",
     "eslint-plugin-standard": "^4.1.0",
     "identity-obj-proxy": "^3.0.0",
-    "jest": "^27.3.0",
+    "jest": "^28.1.1",
     "jest-preset-preact": "^4.0.5",
     "per-env": "^1.0.2",
     "preact-cli": "^3.2.2",
