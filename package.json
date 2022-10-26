@@ -20,7 +20,7 @@
   "devDependencies": {
     "enzyme": "^3.11.0",
     "enzyme-adapter-preact-pure": "^3.1.0",
-    "eslint": "^7.32.0",
+    "eslint": "^8.0.0",
     "eslint-config-google": "^0.14.0",
     "eslint-config-standard": "^16.0.2",
     "eslint-config-standard-preact": "^1.1.6",
